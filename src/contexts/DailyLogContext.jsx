@@ -51,6 +51,7 @@ export const DailyLogProvider = ({ children }) => {
     };
 
     useEffect(() => {
+        if(!token) return;
         loadOrCreateDailyLog();
     }, [token]);
 
@@ -59,7 +60,8 @@ export const DailyLogProvider = ({ children }) => {
             dailyLog,
             loading,
             error,
-            refreshDailyLog
+            refreshDailyLog,
+            loadOrCreateDailyLog
         }}>
             {children}
         </DailyLogContext.Provider>

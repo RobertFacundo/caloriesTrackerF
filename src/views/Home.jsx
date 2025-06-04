@@ -1,14 +1,13 @@
-import React from "react";
 import { NavBar } from "../components/NavBar";
 import HomeStats from "../components/HomeStats";
-import MealCard from "../components/MealCard";
+import MealCardList from "../components/MealCardList";
 
 export const Home = () => {
     return (
         <div>
             <NavBar />
             <HomeStats />
-            <MealCard />
+            <MealCardList />
         </div>
     )
 }

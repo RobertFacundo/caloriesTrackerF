@@ -36,8 +36,11 @@ export function UserProvider({ children }) {
         setLoading(true);
         setError(null);
         try {
-            const updateUser = await updateUserService(token, details);
-            setUser(updateUser);
+            const updatedUser = await updateUserService(token, details);
+            setUser(updatedUser);
+            localStorage.setItem('user', JSON.stringify(updatedUser))
+            console.log('usuario actualizado', updatedUser)
+            return updatedUser
         } catch (error) {
             setError(error.message || 'Error updating user details');
         } finally {

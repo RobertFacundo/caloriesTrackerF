@@ -2,8 +2,10 @@ import { useState } from "react";
 import { AuthServices } from "../services/AuthServices";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../contexts/userContext";
+import { useDailyLog } from "../contexts/DailyLogContext";
 
 export function useAuth() {
+    const {loadOrCreateDailyLog} = useDailyLog();
     const [isLoginView, setIsLoginView] = useState(false);
     const [credentials, setCredentials] = useState({
         username: '',
@@ -50,6 +52,8 @@ export function useAuth() {
             console.log(response, 'log del hook');
             localStorage.setItem('user', JSON.stringify(user))
             setUser(user)
+
+            await loadOrCreateDailyLog();
 
             if (!user.onboarding_completed) {
                 setShowOnBoarding(true)
