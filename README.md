@@ -14,7 +14,7 @@ This is the **frontend** of the **Calories Tracker** application, built with **R
 
 - ⚛️ React 18
 - ⚡ Vite
-- 🎨 Tailwind CSS *(or Styled Components, etc.)*
+- 🎨 Styled Components
 - 📈 Chart.js (`react-chartjs-2`)
 - 🧭 React Router
 - 🌐 Axios
