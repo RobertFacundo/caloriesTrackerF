@@ -69,7 +69,15 @@ export function useAuth() {
             }
             return { user, token }
         } catch (error) {
-            console.error(error)
+            console.error(error);
+
+            if(error?.response?.data?.message){
+                setError(error.response.data.message);
+            }else if(error?.message){
+                setError(error.message);
+            }else{
+                setError('An unexpected error ocurred')
+            }
         } finally {
             setLoading(false)
         }
