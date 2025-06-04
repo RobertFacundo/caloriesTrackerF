@@ -68,7 +68,7 @@ export function UserProvider({ children }) {
     }, []);
 
     return (
-        <UserContext.Provider value={{ user,setUser, token,setToken, loading, error, loadUser, updateUserDetails, logOut, setToken }}>
+        <UserContext.Provider value={{ user,setUser, token, loading, error, loadUser, updateUserDetails, logOut, setToken }}>
             {children}
         </UserContext.Provider>
     );
