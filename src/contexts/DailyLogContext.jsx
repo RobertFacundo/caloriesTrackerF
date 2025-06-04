@@ -18,7 +18,7 @@ export const DailyLogProvider = ({ children }) => {
         setError(null);
 
         try {
-            const logs = await getDailyLog(token);
+            const logs = await getDailyLog(token) || [];
             let todayLog = logs.find((log) => log.date === today);
 
             if (!todayLog) {

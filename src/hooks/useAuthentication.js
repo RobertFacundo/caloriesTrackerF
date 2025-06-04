@@ -5,7 +5,7 @@ import { useUser } from "../contexts/userContext";
 import { useDailyLog } from "../contexts/DailyLogContext";
 
 export function useAuth() {
-    const {loadOrCreateDailyLog} = useDailyLog();
+    const { loadOrCreateDailyLog } = useDailyLog();
     const [isLoginView, setIsLoginView] = useState(false);
     const [credentials, setCredentials] = useState({
         username: '',
@@ -47,10 +47,16 @@ export function useAuth() {
 
             const { user, token } = response;
 
-            localStorage.setItem('token', token)
+            if (token) {
+                localStorage.setItem('token', token)
+            }
 
             console.log(response, 'log del hook');
-            localStorage.setItem('user', JSON.stringify(user))
+
+            if (user) {
+                localStorage.setItem('user', JSON.stringify(user))
+            }
+
             setUser(user)
 
             await loadOrCreateDailyLog();
