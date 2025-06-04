@@ -12,7 +12,7 @@ export const useOnBoarding = () => {
     })
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(false)
-    const { updateUserDetails } = useUser();
+    const { updateUserDetails, loadUser, token } = useUser();
 
     const navigate = useNavigate();
 
@@ -31,7 +31,10 @@ export const useOnBoarding = () => {
             await updateUserDetails({
                 ...details,
                 onboarding_completed: true
-            })
+            });
+
+            await loadUser(token)
+            
             navigate('/Home')
         } catch (error) {
             setError('There was a problem during the submit')
