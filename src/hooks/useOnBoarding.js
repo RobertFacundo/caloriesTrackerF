@@ -34,7 +34,7 @@ export const useOnBoarding = () => {
             });
 
             await loadUser(token)
-            
+                
             navigate('/Home')
         } catch (error) {
             setError('There was a problem during the submit')
