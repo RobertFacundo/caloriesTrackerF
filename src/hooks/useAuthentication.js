@@ -14,7 +14,7 @@ export function useAuth() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
     const [showOnBoarding, setShowOnBoarding] = useState(false)
-    const { setUser } = useUser();
+    const { setUser, setToken } = useUser();
 
     const navigate = useNavigate()
 
@@ -58,6 +58,7 @@ export function useAuth() {
             }
 
             setUser(user)
+            setToken(token)
 
             await loadOrCreateDailyLog();
 
