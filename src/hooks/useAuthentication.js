@@ -71,12 +71,14 @@ export function useAuth() {
         } catch (error) {
             console.error(error);
 
-            if(error?.response?.data?.message){
-                setError(error.response.data.message);
+            if(error?.response?.data?.errors){
+                setError(error.response.data.errors[0]);
+            }else if(error?.response?.data?.message){
+                setError(error.response.data.message);;
             }else if(error?.message){
                 setError(error.message);
             }else{
-                setError('An unexpected error ocurred')
+                setError('Unexpected error ocurred')
             }
         } finally {
             setLoading(false)
