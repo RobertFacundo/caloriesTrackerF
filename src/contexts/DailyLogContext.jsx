@@ -10,7 +10,7 @@ export const DailyLogProvider = ({ children }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const today = new Date().toISOString().split("T")[0];
+    const today = new Date().toLocaleDateString("en-CA");
 
     const loadOrCreateDailyLog = async () => {
         if (!token) return

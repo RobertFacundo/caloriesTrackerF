@@ -1,4 +1,9 @@
+import {
+    StyledMealCard, HeaderRow, TotalNutritionRow, IngredientItem, IngredientList, InputRow,
+    IngredientNameRow, IngredientNutritionRow, AddIngredientButton, InputGroup, ErrorText, StyledInput, AddIngredientInformationButton
+} from '../styled/components/MealCardStyled'
 import { useIngredientManager } from "../hooks/useMealCard";
+import NutritionValues from './NutritionValues';
 
 const MealCard = ({ meal }) => {
     const {
@@ -21,67 +26,114 @@ const MealCard = ({ meal }) => {
     } = useIngredientManager(meal);
 
     return (
-        <div>
-            <h3>{meal.name}</h3>
-            <ul>
-                {ingredients.map((ing) => (
-                    <li key={ing.id}>
-                        <strong>{ing.name}</strong>
-                        {`Cal: ${ing.calories} | Prot: ${ing.protein}g | Carb: ${ing.carbs}g | Fat: ${ing.fat}`}
-                        <button onClick={() => handleDeleteIngredient(ing.id)}>🗑️</button>
-                    </li>
-                ))}
+        <StyledMealCard>
+            <HeaderRow>
+                <h3>{meal.name}</h3>
                 {meal.total_nutrition ? (
-                    <h4>
-                        Total:
-                        {` Cal: ${meal.total_nutrition.calories} | Prot: ${meal.total_nutrition.protein}g | Carb: ${meal.total_nutrition.carbs}g | Fat: ${meal.total_nutrition.fat}g`}
-                    </h4>
+                    <TotalNutritionRow>
+                        <NutritionValues
+                            calories={meal.total_nutrition.calories}
+                            protein={meal.total_nutrition.protein}
+                            carbs={meal.total_nutrition.carbs}
+                            fat={meal.total_nutrition.fat}
+                        />
+                    </TotalNutritionRow>
                 ) : (
-                    <h4>Total: No nutrition data</h4>
+                    <span>Total: No nutrition data</span>
                 )}
-            </ul>
+            </HeaderRow>
+            <IngredientList>
+                {ingredients.map((ing) => (
+                    <IngredientItem key={ing.id}>
+                        <IngredientNameRow>
+                            <strong>{ing.name}</strong>
+                            <button onClick={() => handleDeleteIngredient(ing.id)} title="Delete">🗑️</button>
+                        </IngredientNameRow>
+                        <IngredientNutritionRow>
+                            <NutritionValues
+                                calories={ing.calories}
+                                protein={ing.protein}
+                                carbs={ing.carbs}
+                                fat={ing.fat}
+                            />
+                        </IngredientNutritionRow>
+                    </IngredientItem>
+                ))}
+            </IngredientList>
 
             {showInput ? (
-                <div>
-                    <input
-                        type="text"
-                        value={ingredientName}
-                        onChange={(e) => setIngredientName(e.target.value)}
-                        placeHolder='add ingredient'
-                    />
-                    <input
-                        type="number"
-                        placeholder='Calories'
-                        value={calories}
-                        onChange={(e) => setCalories(e.target.value)}
-                    />
-                    <input
-                        type="number"
-                        placeholder="Protein"
-                        value={protein}
-                        onChange={(e) => setProtein(e.target.value)}
-                    />
-                    <input
-                        type="number"
-                        placeholder="Carbs"
-                        value={carbs}
-                        onChange={(e) => setCarbs(e.target.value)}
-                    />
-                    <input
-                        type="number"
-                        placeholder="Fat"
-                        value={fat}
-                        onChange={(e) => setFat(e.target.value)}
-                    />
-                    <button onClick={handleAddIngredient}>Add</button>
-                    <button onClick={() => setShowInput(false)}>Cancel</button>
-                </div>
-            ) : (
-                <button onClick={() => setShowInput(true)}>Add ingredient</button>
-            )}
+                <InputGroup>
+                    <InputRow>
+                        <label htmlFor="ingredientName">Ingredient:</label>
+                        <StyledInput
+                            type="text"
+                            value={ingredientName}
+                            onChange={(e) => setIngredientName(e.target.value)}
+                            placeHolder='add ingredient'
+                        />
+                    </InputRow>
+                    {ingredientName.trim() !== '' && (
+                        <InputRow>
+                            <label htmlFor="calories">Calories:</label>
+                            <StyledInput
+                                type="number"
+                                placeholder='Calories'
+                                value={calories}
+                                onChange={(e) => setCalories(e.target.value)}
+                            />
+                        </InputRow>
+                    )}
+                    {calories.trim() !== '' && (
+                        <InputRow>
+                            <label htmlFor="protein">Protein:</label>
+                            <StyledInput
+                                id="protein"
+                                type="number"
+                                value={protein}
+                                onChange={(e) => setProtein(e.target.value)}
+                                placeholder="Protein"
+                            />
+                        </InputRow>
+                    )}
 
+                    {protein.trim() !== '' && (
+                        <InputRow>
+                            <label htmlFor="carbs">Carbs:</label>
+                            <StyledInput
+                                id="carbs"
+                                type="number"
+                                value={carbs}
+                                onChange={(e) => setCarbs(e.target.value)}
+                                placeholder="Carbs"
+                            />
+                        </InputRow>
+                    )}
+
+                    {carbs.trim() !== '' && (
+                        <InputRow>
+                            <label htmlFor="fat">Fat:</label>
+                            <StyledInput
+                                id="fat"
+                                type="number"
+                                value={fat}
+                                onChange={(e) => setFat(e.target.value)}
+                                placeholder="Fat"
+                            />
+                        </InputRow>
+                    )}
+
+                    {fat.trim() !== '' && (
+                        <div>
+                            <AddIngredientInformationButton onClick={handleAddIngredient}>Add</AddIngredientInformationButton>
+                            <AddIngredientInformationButton onClick={() => setShowInput(false)}>Cancel</AddIngredientInformationButton>
+                        </div>
+                    )}
+                </InputGroup>
+            ) : (
+                <AddIngredientButton onClick={() => setShowInput(true)}>Add ingredient</AddIngredientButton>
+            )}
             {error && <p>{error}</p>}
-        </div>
+        </StyledMealCard>
     )
 };
 

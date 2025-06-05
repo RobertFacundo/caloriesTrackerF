@@ -3,10 +3,18 @@ import { createMeal } from "../services/mealServices";
 import { useDailyLog } from "../contexts/DailyLogContext";
 
 export const useMealCardList = (dailyLog) => {
-    const {refreshDailyLog} = useDailyLog()
+    const { refreshDailyLog } = useDailyLog()
     const [mealName, setMealName] = useState('');
+    const [error, setError] = useState(null);
     const [showInput, setShowInput] = useState(false);
-    const [error, setError] = useState(null);   
+
+    const handleShowInput = () => {
+        setShowInput(true);
+    };
+
+    const handleChange = (value) => {
+        setMealName(value);
+    };
 
     const handleAddMeal = async () => {
         if (!mealName.trim()) return
@@ -15,7 +23,7 @@ export const useMealCardList = (dailyLog) => {
         try {
             await createMeal(dailyLog.id, { name: mealName });
             await refreshDailyLog();
-            
+
             setMealName("");
             setShowInput(false);
             setError(null);
@@ -28,8 +36,9 @@ export const useMealCardList = (dailyLog) => {
         mealName,
         setMealName,
         showInput,
-        setShowInput,
         handleAddMeal,
         error,
+        handleShowInput,
+        handleChange,
     }
 }

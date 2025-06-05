@@ -1,5 +1,15 @@
 import React from "react";
 import { useOnBoarding } from "../hooks/useOnBoarding";
+import {
+    FormCard,
+    Title,
+    StyledForm,
+    Input,
+    Select,
+    Label,
+    Button,
+    ErrorMsg,
+} from '../styled/components/LoginSignUpStyled';
 
 export const OnBoarding = () => {
     const {
@@ -11,43 +21,43 @@ export const OnBoarding = () => {
     } = useOnBoarding();
 
     return (
-        <div>
-            <h2>Welcome! 👋</h2>
-            <form onSubmit={handleSubmit}>
-                <label>How much do you weight?
-                    <input
+        <FormCard>
+            <Title>Welcome! 👋</Title>
+            <StyledForm onSubmit={handleSubmit}>
+                <Label>How much do you weight?
+                    <Input
                         type="text"
                         name='weight'
                         value={details.weight}
                         onChange={handleChange}
                         required
                     />
-                </label>
+                </Label>
 
-                <label>
+                <Label>
                     ...and how tall are you in cms?
-                    <input
+                    <Input
                         type="number"
                         name='height'
                         value={details.height}
                         onChange={handleChange}
                         required
                     />
-                </label>
-                <label>
+                </Label>
+                <Label>
                     ...age?
-                    <input
+                    <Input
                         type="number"
                         name="age"
                         value={details.age}
                         onChange={handleChange}
                         required
                     >
-                    </input>
-                </label>
-                <label>
+                    </Input>
+                </Label>
+                <Label>
                     ...and your body is...?
-                    <select
+                    <Select
                         name="gender"
                         value={details.gender}
                         onChange={handleChange}
@@ -56,15 +66,15 @@ export const OnBoarding = () => {
                         <option value="">Select</option>
                         <option value="male">Masculine</option>
                         <option value="femenine">Femenine</option>
-                    </select>
-                </label>
-                <label>
+                    </Select>
+                </Label>
+                <Label>
                     ...and for last but not least, how often do you excercise?
-                    <select
-                    name="activity_level"
-                    value={details.activity_level}
-                    onChange={handleChange}
-                    required
+                    <Select
+                        name="activity_level"
+                        value={details.activity_level}
+                        onChange={handleChange}
+                        required
                     >
                         <option value="">Select</option>
                         <option value="sedentary">Sedentary(almost no excercise)</option>
@@ -72,14 +82,14 @@ export const OnBoarding = () => {
                         <option value="moderate">Moderate (e to 5 days a week)</option>
                         <option value='active'>Active... 6 days a week</option>
                         <option value="very_active">Intense training throught out the whole week</option>
-                    </select>
-                </label>
+                    </Select>
+                </Label>
 
-                <button type="submit" disabled={loading}>
-                    {loading ? 'Saving details': 'Update details'}
-                </button>
+                <Button type="submit" disabled={loading}>
+                    {loading ? 'Saving details' : 'Update details'}
+                </Button>
                 {error && <p>{error}</p>}
-            </form>
-        </div>
-    )
-}
+            </StyledForm>
+        </FormCard>
+    );
+};

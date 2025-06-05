@@ -1,13 +1,18 @@
 import React, { useState } from "react";
 import { useProfileStats } from "../hooks/useStats";
 import { Bar } from "react-chartjs-2";
+import { useTheme } from "styled-components";
+import {Container, ButtonGroup, RangeButton,TotalsContainer} from '../styled/components/ProfileStats'
+import Loader from "./Loader";
 
 const ProfileStats = () => {
     const [range, setRange] = useState('weekly');
     const { data, deficitTotal, totalCalories, totalGoal, loading, error } = useProfileStats(range);
 
+    const theme = useTheme();
 
-    if (loading) return <p>Loading stats...</p>
+
+    if (loading) return <Loader/>
     if (error) return <p>Error loading stats: {error}</p>
     if (!data) return null;
 
@@ -17,14 +22,14 @@ const ProfileStats = () => {
             {
                 label: 'Calories Consumed',
                 data: data.map((day) => day.caloriesConsumed),
-                backgroundColor: "#FF6384",
+                backgroundColor: theme.primary,
                 yAxisID: 'y',
                 barThickness: 30,
             },
             {
                 label: "Calories Goal",
                 data: data.map((day) => day.caloriesGoal),
-                backgroundColor: "#36A2EB",
+                backgroundColor: theme.surface,
                 yAxisID: 'y',
                 barThickness: 30,
             },
@@ -33,6 +38,14 @@ const ProfileStats = () => {
 
     const chartOptions = {
         responsive: true,
+        onHover: (event, chartElement) => {
+            const target = event.native ? event.native.target : event.target;
+            if (chartElement.length) {
+                target.style.cursor = 'pointer';
+            } else {
+                target.style.cursor = 'default';
+            }
+        },
         plugins: {
             tooltip: {
                 callbacks: {
@@ -41,17 +54,17 @@ const ProfileStats = () => {
                         const datasetLabel = context.dataset.label;
                         const day = data[index];
 
-                        if(datasetLabel === 'Calories Goal'){
-                            return[
+                        if (datasetLabel === 'Calories Goal') {
+                            return [
                                 `Goal: ${day.caloriesGoal}`,
                                 `Deficit: ${day.deficit}`,
-                                day.weight ? `Weight: ${day.weight}kg`: "No weigth data",
+                                day.weight ? `Weight: ${day.weight}kg` : "No weigth data",
                             ];
-                        }else if(datasetLabel === 'Calories Consumed'){
+                        } else if (datasetLabel === 'Calories Consumed') {
                             return [
                                 `Consumed: ${day.caloriesConsumed}`,
                                 `Deficit: ${day.deficit}`,
-                                day.weight ? `Weight: ${day.weight}kg`: "No weight data",
+                                day.weight ? `Weight: ${day.weight}kg` : "No weight data",
                             ];
                         }
                         return '';
@@ -61,20 +74,40 @@ const ProfileStats = () => {
             legend: {
                 display: true,
                 position: 'top',
+                labels: {
+                    color: theme.text, // 👉 Cambia color de las leyendas
+                    font: {
+                        size: 14,
+                    },
+                },
             },
         },
         scales: {
             x: {
+                ticks: {
+                    color: theme.text,
+                },
                 title: {
                     display: true,
                     text: "Date",
+                    color: theme.text, // 👉 Color del título del eje X
+                    font: {
+                        size: 16,
+                    },
                 },
             },
             y: {
+                ticks: {
+                    color: theme.text, // 👉 Color de los valores del eje Y
+                },
                 beginAtZero: true,
                 title: {
                     display: true,
                     text: "Calories",
+                    color: theme.text,
+                    font: {
+                        size: 16,
+                    },
                 },
                 position: 'left',
             },
@@ -82,21 +115,21 @@ const ProfileStats = () => {
     };
 
     return (
-        <div>
-            <div>
-                <button onClick={() => setRange('weekly')}>Weekly</button>
-                <button onClick={() => setRange('monthly')}>    Monthly</button>
-                <button onClick={() => setRange('annually')}>Annually</button>
-            </div>
+        <Container>
+            <ButtonGroup>
+                <RangeButton onClick={() => setRange('weekly')}>Weekly</RangeButton>
+                <RangeButton onClick={() => setRange('monthly')}>Monthly</RangeButton>
+                <RangeButton onClick={() => setRange('annually')}>Annually</RangeButton>
+            </ButtonGroup>
             <div>
                 <Bar data={chartData} options={chartOptions} />
             </div>
-            <div>
-                <p><strong>Total Calories Consumed:</strong> {totalCalories}</p>
-                <p><strong>Total Calories Allowed:</strong> {totalGoal}</p>
-                <p><strong>Total Caloric Deficit:</strong> {deficitTotal}</p>
-            </div>
-        </div>
+            <TotalsContainer>
+                <p><strong>Total Calories Consumed:</strong><span> {totalCalories}</span></p>
+                <p><strong>Total Calories Allowed:</strong> <span>{totalGoal}</span></p>
+                <p><strong>Total Caloric Deficit:</strong> <span>{deficitTotal}</span></p>
+            </TotalsContainer>
+        </Container>
     );
 };
 

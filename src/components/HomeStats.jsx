@@ -1,35 +1,44 @@
 import useHomeStats from "../hooks/useHomeStats";
 import { InformationBox } from "./InformationBox";
+import { StatsContainer, StatsLeft, StatsRight, ToggleSwitch } from '../styled/components/HomeStatsStyled'
+import Loader from "./Loader";
 
 
 const HomeStats = () => {
     const { loading, error, dailyNutrition, calorieDeficit, dailyCalories, trainingDay, toggleTrainingDay, updating } = useHomeStats();
 
-    if (loading) return <p>Loading</p>
+    if (loading) return <Loader />
     if (error) return <p>Error....</p>
 
     return (
-        <div >
-            <div>
-                <h2>home stats</h2>
-                <label >
-                    <input type="checkbox" checked={trainingDay} onChange={toggleTrainingDay} disabled={updating} />
-                    Today is a training day?
-                </label>
+        <StatsContainer>
+            <StatsLeft>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                    {trainingDay ? "🏋️ Today is a training day!" : "💪 Today is a training day?"}
+                    <ToggleSwitch>
+                        <input
+                            type="checkbox"
+                            checked={trainingDay}
+                            onChange={toggleTrainingDay}
+                            disabled={updating}
+                        />
+                        <span />
+                    </ToggleSwitch>
+                </div>
                 {dailyNutrition ? (
                     <div>
-                        <p>Your maximun daily calorie intake is <strong>{dailyCalories}</strong>kcal.</p>
-                        <p>So far, you've consumed <strong>{dailyNutrition.calories}</strong>kcal</p>
-                        <p>Your Current deficit is <strong>{calorieDeficit}</strong>kcal</p>
+                        <p>🔥 Max daily intake: <strong>{dailyCalories}</strong> kcal</p>
+                        <p>🍽️ You've consumed: <strong>{dailyNutrition.calories}</strong> kcal</p>
+                        <p>⚖️ Current deficit: <strong>{calorieDeficit}</strong> kcal</p>
                     </div>
                 ) : (
-                    <p>No daily log data is available</p>
+                    <p>No daily log data     is available</p>
                 )}
-            </div>
-            <div>
-                <InformationBox dailyCalories={dailyCalories}/>
-            </div>
-        </div>
+            </StatsLeft>
+            <StatsRight>
+                <InformationBox dailyCalories={dailyCalories} />
+            </StatsRight>
+        </StatsContainer>
     )
 }
 

@@ -1,14 +1,14 @@
 import { LoginSignUp } from "../components/LoginSignUp";
 import { OnBoarding } from "../components/OnBoarding";
 import { useAuth } from "../hooks/useAuthentication";
+import { AuthWrapper } from "../styled/auth/AuthWrapper";
 
 export const Auth = () => {
     const auth = useAuth()
 
     return (
-        <div>
-            <h1>Auth</h1>
+        <AuthWrapper>
             {auth.showOnBoarding ? <OnBoarding /> : <LoginSignUp {...auth}/>}
-        </div>
-    )
-}
+        </AuthWrapper>
+    );
+};
