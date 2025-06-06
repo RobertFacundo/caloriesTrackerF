@@ -33,6 +33,7 @@ export const StyledForm = styled.form`
 `;
 
 export const Input = styled.input`
+  width: 100%;
   padding: 0.75rem;
   border-radius: 6px;
   border: 1px solid ${({ theme }) => theme.border};

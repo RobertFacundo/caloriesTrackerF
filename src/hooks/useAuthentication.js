@@ -32,11 +32,22 @@ export function useAuth() {
         }));
     };
 
+    function validatePassword(password){
+        const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+        return regex.test(password);
+    }
+
 
     async function handleSubmit(e) {
         e.preventDefault();
-        setLoading(true)
-        setError(null)
+        setLoading(true);
+        setError(null);
+
+        if(!isLoginView && !validatePassword(credentials.password)){
+            setError('Password must be at least 6 characters and include at least one letter and one number.');
+            setLoading(false);
+            return;
+        }
 
         const type = isLoginView ? 'login' : 'signup';
 
@@ -94,6 +105,7 @@ export function useAuth() {
         handleSubmit,
         loading,
         error,
-        showOnBoarding
+        showOnBoarding,
+        validatePassword
     }
 }
