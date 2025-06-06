@@ -115,7 +115,7 @@ const ProfileStats = () => {
     };
 
     return (
-        <Container>
+        <Container className="profile-stats">
             <ButtonGroup>
                 <RangeButton onClick={() => setRange('weekly')}>Weekly</RangeButton>
                 <RangeButton onClick={() => setRange('monthly')}>Monthly</RangeButton>

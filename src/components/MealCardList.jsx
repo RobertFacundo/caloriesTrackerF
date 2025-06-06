@@ -53,7 +53,7 @@ const MealCardList = () => {
                             <AddMealNameButton onClick={handleAddMeal}>Add Meal</AddMealNameButton>
                         </>
                     ) : (
-                        <AddMealButton onClick={handleShowInput}>+</AddMealButton>
+                        <AddMealButton className="add-meal-button" onClick={handleShowInput}>+</AddMealButton>
                     )}
                 </AddMealInput>
             </MealsContainer>

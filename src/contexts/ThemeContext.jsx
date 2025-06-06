@@ -1,9 +1,9 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 
-const ThemeContext = createContext();
+export const ThemeContext = createContext();
 
-const lightTheme = {
+export const lightTheme = {
     background: "#e3e4e6",          // Fondo general
     surface: "#f5f2f2",           // Tarjetas, inputs, etc
     surfaceHover: "#ccc6c6",
@@ -22,7 +22,7 @@ const lightTheme = {
     }
 };
 
-const darkTheme = {
+export const darkTheme = {
     background: "#161617",          // Fondo general oscuro
     surface: "#202021",             // Tarjetas, inputs, modales
     surfaceHover: "#19191a",
@@ -60,7 +60,7 @@ export const ThemeProvider = ({ children }) => {
     const isDark = theme === 'dark'
 
     return (
-        <ThemeContext.Provider value={{ theme, toggleTheme, isDark }}>
+        <ThemeContext.Provider value={{ theme, toggleTheme, isDark, lightTheme, darkTheme }}>
             <StyledThemeProvider theme={themeStyles}>
                 {children}
             </StyledThemeProvider>

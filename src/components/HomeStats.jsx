@@ -26,10 +26,12 @@ const HomeStats = () => {
                     </ToggleSwitch>
                 </div>
                 {dailyNutrition ? (
-                    <div>
+                    <div className="home-stats">
                         <p>🔥 Max daily intake: <strong>{dailyCalories}</strong> kcal</p>
                         <p>🍽️ You've consumed: <strong>{dailyNutrition.calories}</strong> kcal</p>
-                        <p>⚖️ Current deficit: <strong>{calorieDeficit}</strong> kcal</p>
+                        <p>⚖️ Current deficit: <strong> {calorieDeficit > 0
+                            ? `${calorieDeficit}`
+                            : `No deficit (surplus of ${Math.abs(calorieDeficit)})`}</strong>kcal</p>
                     </div>
                 ) : (
                     <p>No daily log data     is available</p>

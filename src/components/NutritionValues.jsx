@@ -19,7 +19,7 @@ const NutrientValue = styled.div`
 const NutritionValues = ({ calories, protein, carbs, fat }) => {
   const theme = useTheme()
   return (
-    <ValueContainer>
+    <ValueContainer className="nutrition-values">
       <NutrientValue title="Calories" color={theme.nutrition.calories}>{calories}</NutrientValue>
       <NutrientValue title="Protein" color={theme.nutrition.protein}>{protein}</NutrientValue>
       <NutrientValue title="Carbs" color={theme.nutrition.carbs}>{carbs}</NutrientValue>

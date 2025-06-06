@@ -34,12 +34,12 @@ const ProfileInfo = () => {
     ];
 
     return (
-        <ProfileContainer>
+        <ProfileContainer className="profile-info">
             <Title> {userData.username}'s Profile</Title>
             {error && <p>{error}</p>}
 
             {fields.map(({ name, label }) => (
-                <FieldWrapper key={name}>
+                <FieldWrapper key={name} >
                     <Label>{label}</Label>
                     {editing ? (
                         name === "gender" ? (
