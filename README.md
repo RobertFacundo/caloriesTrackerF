@@ -6,7 +6,7 @@ This is the **frontend** of the **Calories Tracker** application, built with **R
 
 ## 🔗 Live Demo
 
-👉 [Visit the deployed app](https://your-deployed-frontend-url.com)
+👉 [Visit the deployed app](https://calories-tracker-f.vercel.app/)
 
 ---
 
