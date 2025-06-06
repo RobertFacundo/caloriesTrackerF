@@ -1,5 +1,5 @@
 import {
-    StyledMealCard, HeaderRow, TotalNutritionRow, IngredientItem, IngredientList, InputRow,
+    StyledMealCard, HeaderRow, TotalNutritionRow, IngredientItem, IngredientList, InputRow, 
     IngredientNameRow, IngredientNutritionRow, AddIngredientButton, InputGroup, ErrorText, StyledInput, AddIngredientInformationButton
 } from '../styled/components/MealCardStyled'
 import { useIngredientManager } from "../hooks/useMealCard";
@@ -22,25 +22,29 @@ const MealCard = ({ meal }) => {
         setShowInput,
         handleAddIngredient,
         handleDeleteIngredient,
-        error
+        error,
+        handleDeleteMeal
     } = useIngredientManager(meal);
 
     return (
         <StyledMealCard>
             <HeaderRow>
                 <h3>{meal.name}</h3>
-                {meal.total_nutrition ? (
-                    <TotalNutritionRow>
-                        <NutritionValues
-                            calories={meal.total_nutrition.calories}
-                            protein={meal.total_nutrition.protein}
-                            carbs={meal.total_nutrition.carbs}
-                            fat={meal.total_nutrition.fat}
-                        />
-                    </TotalNutritionRow>
-                ) : (
-                    <span>Total: No nutrition data</span>
-                )}
+                <div  style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    {meal.total_nutrition ? (
+                        <TotalNutritionRow>
+                            <NutritionValues
+                                calories={meal.total_nutrition.calories}
+                                protein={meal.total_nutrition.protein}
+                                carbs={meal.total_nutrition.carbs}
+                                fat={meal.total_nutrition.fat}
+                            />
+                        </TotalNutritionRow>
+                    ) : (
+                        <span>Total: No nutrition data</span>
+                    )}
+                    <button style={{background: 'none', border: 'none', cursor: 'pointer'}} onClick={handleDeleteMeal}>🗑️</button>
+                </div>
             </HeaderRow>
             <IngredientList>
                 {ingredients.map((ing) => (

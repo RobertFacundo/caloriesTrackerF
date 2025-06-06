@@ -11,6 +11,14 @@ export const StyledMealCard = styled.div`
   flex-direction: column;
   gap: 1rem;
   align-self: start;
+  cursor: pointer;
+  transition: transform 0.9s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    cursor: pointer;
+  }
 `;
 
 export const HeaderRow = styled.div`
@@ -161,14 +169,14 @@ padding: 0.5rem 1rem;
 
 export const InputRow = styled.div`
   display: flex;
-  flex-wrap: wrap;
+  flex: 1 1 150px; 
   align-items: center;
   gap: 0.5rem;
   padding-right: 1rem;
   margin: 0.3rem;
   
   label {
-    min-width: 80px; /* ancho fijo para que queden alineados */
+    min-width: 60px; /* ancho fijo para que queden alineados */
     font-weight: 600;
     color: ${({ theme }) => theme.text};
   }

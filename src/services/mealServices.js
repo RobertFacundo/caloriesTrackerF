@@ -14,3 +14,20 @@ export const createMeal = async (dailyLogId, mealData) => {
         throw Error
     }
 }
+
+export const deleteMeal = async (dailyLogId, mealId, token) => {
+    try {
+        const response = await axios.delete(`${URL_B}api/v1/daily_logs/${dailyLogId}/meals/${mealId}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+            }
+        );
+        console.log(response,'log del deleteMeal')
+        return response.data;
+    } catch (error){
+        console.error(error);
+        throw error;
+    }
+}

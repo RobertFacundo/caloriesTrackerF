@@ -27,14 +27,14 @@ const MealCardList = () => {
     return (
         <div>
             <HeaderWrapper>
+                <NutritionLegend />
+                <CenteredTitle>Meals</CenteredTitle>
                 <NutritionValues
                     calories={totalNutrition.calories}
                     protein={totalNutrition.protein}
                     carbs={totalNutrition.carbs}
                     fat={totalNutrition.fat}
                 />
-                <CenteredTitle>Meals</CenteredTitle>
-                <NutritionLegend />
             </HeaderWrapper>
 
             <MealsContainer>

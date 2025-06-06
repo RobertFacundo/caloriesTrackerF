@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { addIngredient, deleteIngredient } from '../services/ingredientServices';
 import { useDailyLog } from '../contexts/DailyLogContext';
 import { useUser } from '../contexts/userContext';
+import { deleteMeal } from '../services/mealServices';
 
 export const useIngredientManager = (meal) => {
     const {token} = useUser()
@@ -59,6 +60,16 @@ export const useIngredientManager = (meal) => {
         }
     }
 
+    const handleDeleteMeal = async()=>{
+        try{
+            await deleteMeal(dailyLog.id, meal.id, token);
+            await refreshDailyLog();
+        }catch(error){
+            console.error(error, 'error deleting meal');
+            setError('Error deleting meal')
+        }
+    }
+
     return {
         ingredients,
         ingredientName,
@@ -75,6 +86,7 @@ export const useIngredientManager = (meal) => {
         setShowInput,
         handleAddIngredient,
         handleDeleteIngredient,
-        error
+        error,
+        handleDeleteMeal
     }
 }

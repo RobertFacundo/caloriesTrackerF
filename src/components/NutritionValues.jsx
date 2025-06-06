@@ -4,6 +4,7 @@ const ValueContainer = styled.div`
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
+  padding-right: 1rem;
 `;
 
 const NutrientValue = styled.div`
