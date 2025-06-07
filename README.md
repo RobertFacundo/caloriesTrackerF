@@ -17,7 +17,7 @@ This is the **frontend** of the **Calories Tracker** application, built with **R
 - 🎨 Styled Components
 - 📈 Chart.js (`react-chartjs-2`)
 - 🧭 React Router
-- 🌐 Axios
+- 🌐 Axios  
 - 🔐 JWT Authentication (via API)
 
 ---
@@ -57,6 +57,8 @@ Weekly / Monthly / Yearly calories
 Weight progression
 
 Calorie deficit overview
+
+🧭 Guided Tour with React Joyride
 
 📈 Chart.js Visualizations for calories and weight
 
