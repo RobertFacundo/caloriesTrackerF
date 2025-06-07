@@ -46,7 +46,7 @@ export const LoginSignUp = ({ isLoginView, credentials, switchToSignUp, switchTo
                 </Button>
             </StyledForm>
 
-            {loading && <p>Loading...</p>}
+            {loading && <p style={{textAlign: 'center'}}>Loading...</p>}
             {error && <ErrorMsg style={{ color: 'red' }}>{error}</ErrorMsg>}
 
             <ToggleText>
