@@ -7,6 +7,21 @@ export const Container = styled.div`
   font-weight: 300;
 `;
 
+export const ChartWrapper = styled.div`
+  width: 100%;
+  overflow-x: auto;
+
+  canvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  @media (max-width: 900px){
+    max-width: 800px;
+    height: 300px;
+  }
+`;
+
 export const ButtonGroup = styled.div`
   display: flex;
   justify-content: space-between;

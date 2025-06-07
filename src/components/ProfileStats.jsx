@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useProfileStats } from "../hooks/useStats";
 import { Bar } from "react-chartjs-2";
 import { useTheme } from "styled-components";
-import {Container, ButtonGroup, RangeButton,TotalsContainer} from '../styled/components/ProfileStats'
+import {Container, ButtonGroup, RangeButton,TotalsContainer, ChartWrapper} from '../styled/components/ProfileStats'
 import Loader from "./Loader";
 
 const ProfileStats = () => {
@@ -11,33 +11,36 @@ const ProfileStats = () => {
 
     const theme = useTheme();
 
+    const sortedData = [...data].sort((a, b)=> new Date(a.date) - new Date(b.date));
+
 
     if (loading) return <Loader/>
     if (error) return <p>Error loading stats: {error}</p>
     if (!data) return null;
 
     const chartData = {
-        labels: data.map((day) => day.date),
+        labels: sortedData.map((day) => day.date),
         datasets: [
             {
                 label: 'Calories Consumed',
                 data: data.map((day) => day.caloriesConsumed),
                 backgroundColor: theme.primary,
                 yAxisID: 'y',
-                barThickness: 30,
+                maxBarThickness: 30,
             },
             {
                 label: "Calories Goal",
                 data: data.map((day) => day.caloriesGoal),
                 backgroundColor: theme.surface,
                 yAxisID: 'y',
-                barThickness: 30,
+                maxBarThickness: 30,
             },
         ],
     };
 
     const chartOptions = {
         responsive: true,
+        maintainAspectRatio: false,
         onHover: (event, chartElement) => {
             const target = event.native ? event.native.target : event.target;
             if (chartElement.length) {
@@ -121,9 +124,9 @@ const ProfileStats = () => {
                 <RangeButton onClick={() => setRange('monthly')}>Monthly</RangeButton>
                 <RangeButton onClick={() => setRange('annually')}>Annually</RangeButton>
             </ButtonGroup>
-            <div>
+            <ChartWrapper>
                 <Bar data={chartData} options={chartOptions} />
-            </div>
+            </ChartWrapper>
             <TotalsContainer>
                 <p><strong>Total Calories Consumed:</strong><span> {totalCalories}</span></p>
                 <p><strong>Total Calories Allowed:</strong> <span>{totalGoal}</span></p>

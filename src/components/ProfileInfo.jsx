@@ -10,6 +10,7 @@ import {
     ActionButton,
     Title,
 } from '../styled/components/ProfileInfoStyled'
+import Loader from "./Loader";
 
 const ProfileInfo = () => {
     const {
@@ -22,7 +23,7 @@ const ProfileInfo = () => {
         loading
     } = useProfile();
 
-    if (!userData) return <p>Loading user data...</p>
+    if (!userData) return <Loader/>
     if (!userData) return <p>No user data available</p>
 
     const fields = [

@@ -79,7 +79,7 @@ export const OnBoarding = () => {
                         <option value="">Select</option>
                         <option value="sedentary">Sedentary(almost no excercise)</option>
                         <option value="light">Light excercise, maybe 1 or 3 day a week</option>
-                        <option value="moderate">Moderate (e to 5 days a week)</option>
+                        <option value="moderate">Moderate (3 to 5 days a week)</option>
                         <option value='active'>Active... 6 days a week</option>
                         <option value="very_active">Intense training throught out the whole week</option>
                     </Select>

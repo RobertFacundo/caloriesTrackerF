@@ -8,17 +8,18 @@ export const StatsContainer = styled.section`
   padding: 2rem;
   gap: 2rem;
   background-image: 
-  linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-  url(${coverImage});
+    linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+    url(${coverImage});
   background-size: cover;
   background-position: bottom center;
   background-repeat: no-repeat;
-  color:${({theme})=> theme.secondary};
-  height: 30vh;
+  color:${({ theme }) => theme.secondary};
+  min-height: 30vh;
 
   @media (max-width: 768px) {
     flex-direction: column;
     padding: 1rem;
+    align-items: center;
   }
 `;
 
@@ -28,6 +29,7 @@ export const StatsLeft = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  justify-content: center;
   font-family: "Raleway", sans-serif; 
 
   label {
@@ -52,6 +54,13 @@ export const StatsLeft = styled.div`
     font-weight: 600;
     color: ${({ theme }) => theme.primary};
   }
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    align-items: center;
+  }
 `;
 
 export const StatsRight = styled.div`
@@ -61,6 +70,10 @@ export const StatsRight = styled.div`
 
   @media (max-width: 768px) {
     max-width: 100%;
+    width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 `;
 

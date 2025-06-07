@@ -7,6 +7,14 @@ const LegendContainer = styled.div`
   margin-top: 0.5rem;
   flex-wrap: wrap;
   padding-right: 1rem;
+  
+  @media (max-width: 780px) {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 1rem 2rem;
+    justify-content: center;
+    padding-right: 0;
+  }
 `;
 
 const Dot = styled.span`

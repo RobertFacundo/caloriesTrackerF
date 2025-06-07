@@ -19,6 +19,9 @@ export const InfoBox = styled.div`
 
   @media (max-width: 768px) {
     padding: 1.5rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    width: 100%;
   }
 `;
 
@@ -54,16 +57,22 @@ export const BoxSectionsContainer = styled.div`
   align-items: flex-start;
   width: 100%;
   gap: 2rem;
+  
+  & > ${BoxSection}:not(:last-child) {
+    border-right: 1px solid ${({ theme }) => theme.border};
+  }
 
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: center;
     gap: 1rem;
+
+    & > ${BoxSection}:not(:last-child) {
+      border-right: none;
+      border-bottom: 1px solid ${({ theme }) => theme.border};
+    }
   }
 
-  & > ${BoxSection}:not(:last-child) {
-    border-right: 1px solid ${({ theme }) => theme.border};
-  }
 `;
 
 export const BoxHighLight = styled.p`
