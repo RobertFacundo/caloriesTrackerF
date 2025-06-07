@@ -15,7 +15,7 @@ const ProfileStats = () => {
 
 
     if (loading) return <Loader/>
-    if (error) return <p>Error loading stats: {error}</p>
+    if (error) return <p>Error loading stats!: {error}</p>
     if (!data) return null;
 
     const chartData = {
