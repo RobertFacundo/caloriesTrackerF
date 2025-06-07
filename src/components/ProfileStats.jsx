@@ -11,7 +11,7 @@ const ProfileStats = () => {
 
     const theme = useTheme();
 
-    const sortedData = [...data].sort((a, b)=> new Date(a.date) - new Date(b.date));
+    const sortedData = Array.isArray(data) ? [...data].sort((a, b)=> new Date(a.date) - new Date(b.date)) : [];
 
 
     if (loading) return <Loader/>
