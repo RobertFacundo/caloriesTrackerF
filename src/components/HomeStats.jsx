@@ -13,7 +13,7 @@ const HomeStats = () => {
     return (
         <StatsContainer>
             <StatsLeft>
-                <div style={{ display: "flex", gap: "0.75rem" }}>
+                <div style={{ display: "flex", gap: "0.75rem" }} data-testid='toggleText'>
                     {trainingDay ? "🏋️ Today is a training day!" : "💪 Today is a training day?"}
                     <ToggleSwitch>
                         <input

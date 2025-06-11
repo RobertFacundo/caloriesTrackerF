@@ -43,7 +43,7 @@ const MealCard = ({ meal }) => {
                     ) : (
                         <span>Total: No nutrition data</span>
                     )}
-                    <button style={{background: 'none', border: 'none', cursor: 'pointer'}} onClick={handleDeleteMeal}>🗑️</button>
+                    <button style={{background: 'none', border: 'none', cursor: 'pointer'}} data-testid='delete-meal' onClick={handleDeleteMeal}>🗑️</button>
                 </div>
             </HeaderRow>
             <IngredientList>

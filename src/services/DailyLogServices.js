@@ -32,7 +32,8 @@ export const getDailyLog = async (token) => {
         });
         console.log(response, 'log getdaily log')
         return response.data
-    } catch {
-
+    } catch (error) {
+        console.error(error)
+        throw (error)
     }
 }

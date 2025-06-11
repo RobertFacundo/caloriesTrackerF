@@ -24,7 +24,7 @@ export const OnBoarding = () => {
         <FormCard>
             <Title>Welcome! 👋</Title>
             <StyledForm onSubmit={handleSubmit}>
-                <Label>How much do you weight?
+                <Label>How much do you weigh?
                     <Input
                         type="text"
                         name='weight'
@@ -65,11 +65,11 @@ export const OnBoarding = () => {
                     >
                         <option value="">Select</option>
                         <option value="male">Masculine</option>
-                        <option value="femenine">Femenine</option>
+                        <option value="femenine">Feminine</option>
                     </Select>
                 </Label>
                 <Label>
-                    ...and for last but not least, how often do you excercise?
+                    ...and for last but not least, how often do you exercise?
                     <Select
                         name="activity_level"
                         value={details.activity_level}
