@@ -11,8 +11,9 @@ import {
     Title,
 } from '../styled/components/ProfileInfoStyled'
 import Loader from "./Loader";
+import FieldInput from './ProfileInfoInput'
 
-const ProfileInfo = () => {
+const ProfileInfo = React.memo(() => {
     const {
         userData,
         editing,
@@ -20,11 +21,12 @@ const ProfileInfo = () => {
         handleInputChange,
         handleUpdate,
         error,
-        loading
+        loading,
+        updating
     } = useProfile();
 
-    if (!userData) return <Loader/>
-    if (!userData) return <p>No user data available</p>
+    if (loading) return <Loader />;
+    if (!userData) return <p>No user data available</p>;
 
     const fields = [
         { name: "weight", label: "Weight" },
@@ -40,43 +42,21 @@ const ProfileInfo = () => {
             {error && <p>{error}</p>}
 
             {fields.map(({ name, label }) => (
-                <FieldWrapper key={name} >
-                    <Label>{label}</Label>
-                    {editing ? (
-                        name === "gender" ? (
-                            <Select name={name} value={userData[name]} onChange={handleInputChange} required>
-                                <option value="">Select</option>
-                                <option value="male">Masculine</option>
-                                <option value="femenine">Femenine</option>
-                            </Select>
-                        ) : name === "activity_level" ? (
-                            <Select name={name} value={userData[name]} onChange={handleInputChange} required>
-                                <option value="">Select</option>
-                                <option value="sedentary">Sedentary (almost no exercise)</option>
-                                <option value="light">Light exercise (1–3 days/week)</option>
-                                <option value="moderate">Moderate (3–5 days/week)</option>
-                                <option value="active">Active (6 days/week)</option>
-                                <option value="very_active">Very Active (daily training)</option>
-                            </Select>
-                        ) : (
-                            <Input
-                                type={name === "age" ? "number" : "text"}
-                                name={name}
-                                value={userData[name]}
-                                onChange={handleInputChange}
-                            />
-                        )
-                    ) : (
-                        <Value>{userData[name]}</Value>
-                    )}
-                </FieldWrapper>
+                <FieldInput
+                    key={name}
+                    name={name}
+                    label={label}
+                    value={userData[name]}
+                    editing={editing}
+                    handleInputChange={handleInputChange}
+                />
             ))}
 
             <div>
                 {editing ? (
                     <>
-                        <ActionButton onClick={handleUpdate}>Save</ActionButton>
-                        <ActionButton onClick={() => setEditing(false)}>Cancel</ActionButton>
+                        <ActionButton onClick={handleUpdate} disabled={updating}>{updating ? 'Saving...' : 'Save'}</ActionButton>
+                        <ActionButton onClick={() => setEditing(false)} disabled={updating}>Cancel</ActionButton>
                     </>
                 ) : (
                     <ActionButton onClick={() => setEditing(true)}>Edit</ActionButton>
@@ -84,6 +64,6 @@ const ProfileInfo = () => {
             </div>
         </ProfileContainer>
     );
-};
+});
 
 export default ProfileInfo;

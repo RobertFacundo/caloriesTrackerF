@@ -4,11 +4,11 @@ import { useAuth } from "../hooks/useAuthentication";
 import { AuthWrapper } from "../styled/auth/AuthWrapper";
 
 export const Auth = () => {
-    const auth = useAuth()
+    const auth = useAuth();
 
     return (
         <AuthWrapper>
-            {auth.showOnBoarding ? <OnBoarding /> : <LoginSignUp {...auth}/>}
+            {auth.showOnBoarding ? <OnBoarding /> : <LoginSignUp {...auth} />}
         </AuthWrapper>
     );
 };

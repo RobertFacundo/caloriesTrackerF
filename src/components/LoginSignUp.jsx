@@ -1,8 +1,8 @@
 import { FormCard, Title, StyledForm, Input, Button, ToggleText, ErrorMsg } from '../styled/components/LoginSignUpStyled';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 
-export const LoginSignUp = ({ isLoginView, credentials, switchToSignUp, switchToLogin, handleChange, handleSubmit, loading, error }) => {
+export const LoginSignUp = React.memo(({ isLoginView, credentials, switchToSignUp, switchToLogin, handleChange, handleSubmit, loading, error }) => {
     const [showPassword, setShowPassword] = useState(false);
     return (
         <FormCard>
@@ -46,7 +46,7 @@ export const LoginSignUp = ({ isLoginView, credentials, switchToSignUp, switchTo
                 </Button>
             </StyledForm>
 
-            {loading && <p style={{textAlign: 'center'}}>Loading...</p>}
+            {loading && <p style={{ textAlign: 'center' }}>Loading...</p>}
             {error && <ErrorMsg style={{ color: 'red' }}>{error}</ErrorMsg>}
 
             <ToggleText>
@@ -59,4 +59,4 @@ export const LoginSignUp = ({ isLoginView, credentials, switchToSignUp, switchTo
             </ToggleText>
         </FormCard>
     )
-}
+})

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useUser } from '../contexts/userContext';
 import { useDailyLog } from '../contexts/DailyLogContext';
 
@@ -8,20 +8,22 @@ export const useProfile = () => {
     const [localUserData, setLocalUserData] = useState(null);
     const [editing, setEditing] = useState(false);
     const [error, setError] = useState(null);
+    const [updating, setUpdating] = useState(false);
 
     useEffect(() => {
         if (user) setLocalUserData(user);
     }, [user]);
 
-    const handleInputChange = (e) => {
+    const handleInputChange = useCallback((e) => {
         const { name, value } = e.target;
         setLocalUserData((prev) => ({
             ...prev,
             [name]: value,
         }));
-    };
+    }, []);
 
-    const handleUpdate = async () => {
+    const handleUpdate = useCallback(async () => {
+        setUpdating(true)
         try {
             const updatedUser = await updateUserDetails(localUserData);
             setLocalUserData(updatedUser);
@@ -34,9 +36,9 @@ export const useProfile = () => {
             setError('Error updating useProfile')
             console.error(error)
         } finally {
-
+            setUpdating(false);
         }
-    };
+    }, [localUserData, updateUserDetails, refreshDailyLog, setUser]);
 
     return {
         userData: localUserData,
@@ -46,5 +48,6 @@ export const useProfile = () => {
         handleUpdate,
         error: error || contextError,
         loading,
+        updating
     }
 }

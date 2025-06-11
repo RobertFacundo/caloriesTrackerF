@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { AuthServices } from "../services/AuthServices";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../contexts/userContext";
@@ -18,32 +18,32 @@ export function useAuth() {
 
     const navigate = useNavigate()
 
-    function switchToLogin() {
-        setIsLoginView(true);
-    }
-    function switchToSignUp() {
-        setIsLoginView(false);
-    }
+    const switchToLogin = useCallback(() => setIsLoginView(true), []);
+    const switchToSignUp = useCallback(() => setIsLoginView(false), []);
 
-    function handleChange(e) {
+    const handleChange = useCallback((e) => {
         setCredentials((prev) => ({
             ...prev,
             [e.target.name]: e.target.value
         }));
-    };
+    }, []);
 
-    function validatePassword(password){
+    function validatePassword(password) {
         const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
         return regex.test(password);
     }
 
 
-    async function handleSubmit(e) {
+    const handleSubmit = useCallback(async (e) => {
         e.preventDefault();
+
+        //latencia fix
+        const start = performance.now();
+
         setLoading(true);
         setError(null);
 
-        if(!isLoginView && !validatePassword(credentials.password)){
+        if (!isLoginView && !validatePassword(credentials.password)) {
             setError('Password must be at least 6 characters and include at least one letter and one number.');
             setLoading(false);
             return;
@@ -78,23 +78,26 @@ export function useAuth() {
             } else {
                 navigate('/Home');
             }
+            const end = performance.now();
+            console.log(`Tiempo total login: ${(end - start).toFixed(2)} ms`);
+
             return { user, token }
         } catch (error) {
             console.error(error);
 
-            if(error?.response?.data?.errors){
+            if (error?.response?.data?.errors) {
                 setError(error.response.data.errors[0]);
-            }else if(error?.response?.data?.message){
+            } else if (error?.response?.data?.message) {
                 setError(error.response.data.message);;
-            }else if(error?.message){
+            } else if (error?.message) {
                 setError(error.message);
-            }else{
+            } else {
                 setError('Unexpected error ocurred')
             }
         } finally {
             setLoading(false)
         }
-    }
+    }, [isLoginView, credentials, setUser, setToken, navigate, loadOrCreateDailyLog])
 
     return {
         isLoginView,

@@ -2,9 +2,9 @@ import Loader from "./Loader";
 import { useMealCardList } from "../hooks/useMealCardlList";
 import { useDailyLog } from "../contexts/DailyLogContext";
 import MealCard from "./MealCard";
-import NutritionLegend from "./NutritionLegend";
-import { HeaderWrapper, CenteredTitle, MealsContainer, AddMealInput, AddMealButton, AddMealNameInput, AddMealNameButton } from "../styled/components/MealCardListStyled";
-import NutritionValues from "./NutritionValues";
+import { MealsContainer } from "../styled/components/MealCardListStyled";
+import MealCardHeader from "./MealCardListHeader";
+import AddMealInputSection from "./AddMealInputSection";
 
 const MealCardList = () => {
     const { dailyLog, loading, error: logError } = useDailyLog();
@@ -14,48 +14,31 @@ const MealCardList = () => {
         showInput,
         handleShowInput,
         handleChange,
-        handleAddMeal
-    } = useMealCardList(dailyLog);
+        handleAddMeal,
+        adding
+    } = useMealCardList();
 
     const meals = dailyLog?.meals || [];
     const totalNutrition = dailyLog?.daily_total_nutrition || [];
 
-    if (loading) return <Loader />
-    if (logError) return <p>{logError}</p>
-    if (!dailyLog) return <Loader />
+    if (loading || !dailyLog) return <Loader />;
+    if (logError) return <p>{logError}</p>;
 
     return (
         <div>
-            <HeaderWrapper>
-                <NutritionLegend />
-                <CenteredTitle>Meals</CenteredTitle>
-                <NutritionValues
-                    calories={totalNutrition.calories}
-                    protein={totalNutrition.protein}
-                    carbs={totalNutrition.carbs}
-                    fat={totalNutrition.fat}
-                />
-            </HeaderWrapper>
-
+            <MealCardHeader totalNutrition={totalNutrition} />
             <MealsContainer>
                 {meals.map((meal) => (
                     <MealCard key={meal.id} meal={meal} />
                 ))}
-                <AddMealInput>
-                    {showInput ? (
-                        <>
-                            <AddMealNameInput
-                                type="text"
-                                placeholder="Breakfast, lunch... dinner?"
-                                value={mealName}
-                                onChange={(e) => handleChange(e.target.value)}
-                            />
-                            <AddMealNameButton onClick={handleAddMeal}>Add Meal</AddMealNameButton>
-                        </>
-                    ) : (
-                        <AddMealButton className="add-meal-button" onClick={handleShowInput}>+</AddMealButton>
-                    )}
-                </AddMealInput>
+                <AddMealInputSection
+                    showInput={showInput}
+                    mealName={mealName}
+                    handleChange={handleChange}
+                    handleAddMeal={handleAddMeal}
+                    handleShowInput={handleShowInput}
+                    adding={adding}
+                />
             </MealsContainer>
             {error && <p>{error}</p>}
         </div>

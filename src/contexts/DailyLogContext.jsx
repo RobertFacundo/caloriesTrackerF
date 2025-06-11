@@ -1,12 +1,14 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { createDailyLog, getDailyLog } from "../services/DailyLogServices";
+import { createDailyLog, getDailyLog, getTodayDailyLog } from "../services/DailyLogServices";
 import { useUser } from './userContext';
 
 const DailyLogContext = createContext();
 
 export const DailyLogProvider = ({ children }) => {
     const { token } = useUser();
-    const [dailyLog, setDailyLog] = useState(null)
+    const [dailyLog, setDailyLog] = useState({
+        meals: [],
+    })
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -18,14 +20,18 @@ export const DailyLogProvider = ({ children }) => {
         setError(null);
 
         try {
-            const logs = await getDailyLog(token) || [];
-            let todayLog = logs.find((log) => log.date === today);
+            let todayLog;
 
-            if (!todayLog) {
-                todayLog = await createDailyLog(token, today);
-                console.log("✅ Daily log creado:", todayLog)
-            } else {
-                console.log("📦 Daily log cargado:", todayLog);
+            try {
+                todayLog = await getTodayDailyLog(token);
+                console.log("📦 Log del día cargado:", todayLog)
+            } catch (e) {
+                if (e.response?.status === 404) {
+                    todayLog = await createDailyLog(token, today);
+                    console.log("✅ Log del día creado:", todayLog);
+                } else {
+                    throw e;
+                }
             }
             setDailyLog(todayLog);
         } catch (error) {
@@ -40,10 +46,13 @@ export const DailyLogProvider = ({ children }) => {
         if (!token) return
         try {
             const logs = await getDailyLog(token);
-            const todayLog = logs.find((log) => log.date === today);
-            if (todayLog) {
-                setDailyLog(todayLog);
-                console.log("🔁 Daily log refrescado:", todayLog);
+            const todayLogs = logs.filter((log) => log.date === today);
+            if (todayLogs.length > 0) {
+                const latestLog = todayLogs.reduce((latest, current) =>
+                    new Date(current.updated_at) > new Date(latest.updated_at) ? current : latest
+                );
+                setDailyLog(latestLog);
+                console.log("🔁 Daily log refrescado (más reciente):", latestLog);
             }
         } catch (error) {
             console.error("⛔️ Error refrescando daily log:", error.message);
@@ -51,13 +60,23 @@ export const DailyLogProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        if(!token) return;
-        loadOrCreateDailyLog();
+        let isMounted = true;
+        if (!token) return;
+
+        const load = async () => {
+            await loadOrCreateDailyLog();
+        };
+
+        load();
+
+        return () => { isMounted = false };
+
     }, [token]);
 
     return (
         <DailyLogContext.Provider value={{
             dailyLog,
+            setDailyLog,
             loading,
             error,
             refreshDailyLog,

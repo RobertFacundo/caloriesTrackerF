@@ -2,8 +2,29 @@ import React, { useState } from "react";
 import { useProfileStats } from "../hooks/useStats";
 import { Bar } from "react-chartjs-2";
 import { useTheme } from "styled-components";
-import {Container, ButtonGroup, RangeButton,TotalsContainer, ChartWrapper} from '../styled/components/ProfileStats'
+import { Container, ButtonGroup, RangeButton, TotalsContainer, ChartWrapper } from '../styled/components/ProfileStats'
 import Loader from "./Loader";
+import {
+    Chart as ChartJS,
+    LineElement,
+    CategoryScale,
+    BarElement,
+    LinearScale,
+    PointElement,
+    Tooltip,
+    Legend
+} from 'chart.js';
+
+
+ChartJS.register(
+    LineElement,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    PointElement,
+    Tooltip,
+    Legend
+);
 
 const ProfileStats = () => {
     const [range, setRange] = useState('weekly');
@@ -11,26 +32,32 @@ const ProfileStats = () => {
 
     const theme = useTheme();
 
-    const sortedData = Array.isArray(data) ? [...data].sort((a, b)=> new Date(a.date) - new Date(b.date)) : [];
+    const sortedData = Array.isArray(data) ? [...data].sort((a, b) => new Date(a.date) - new Date(b.date)) : [];
 
 
-    if (loading) return <Loader/>
+    if (loading) return <Loader />
     if (error) return <p>!Error loading stats!: {error}</p>
-    if (!data) return null;
+    if (!Array.isArray(data) || data.length === 0) return <p>No stats available.</p>
 
     const chartData = {
-        labels: sortedData.map((day) => day.date),
+        labels: sortedData.map((day) =>
+            new Date(day.date).toLocaleDateString("en-US", {
+                weekday: "short",
+                month: "short",
+                day: "numeric",
+            })
+        ),
         datasets: [
             {
                 label: 'Calories Consumed',
-                data: data.map((day) => day.caloriesConsumed),
+                data: sortedData.map((day) => day.caloriesConsumed),
                 backgroundColor: theme.primary,
                 yAxisID: 'y',
                 maxBarThickness: 30,
             },
             {
                 label: "Calories Goal",
-                data: data.map((day) => day.caloriesGoal),
+                data: sortedData.map((day) => day.caloriesGoal),
                 backgroundColor: theme.surface,
                 yAxisID: 'y',
                 maxBarThickness: 30,
@@ -43,45 +70,29 @@ const ProfileStats = () => {
         maintainAspectRatio: false,
         onHover: (event, chartElement) => {
             const target = event.native ? event.native.target : event.target;
-            if (chartElement.length) {
-                target.style.cursor = 'pointer';
-            } else {
-                target.style.cursor = 'default';
-            }
+            target.style.cursor = chartElement.length ? "pointer" : "default";
         },
         plugins: {
             tooltip: {
                 callbacks: {
                     label: function (context) {
                         const index = context.dataIndex;
-                        const datasetLabel = context.dataset.label;
-                        const day = data[index];
-
-                        if (datasetLabel === 'Calories Goal') {
-                            return [
-                                `Goal: ${day.caloriesGoal}`,
-                                `Deficit: ${day.deficit}`,
-                                day.weight ? `Weight: ${day.weight}kg` : "No weigth data",
-                            ];
-                        } else if (datasetLabel === 'Calories Consumed') {
-                            return [
-                                `Consumed: ${day.caloriesConsumed}`,
-                                `Deficit: ${day.deficit}`,
-                                day.weight ? `Weight: ${day.weight}kg` : "No weight data",
-                            ];
-                        }
-                        return '';
+                        const day = sortedData[index];
+                        const isGoal = context.dataset.label === "Calories Goal";
+                        return [
+                            isGoal ? `Goal: ${day.caloriesGoal}` : `Consumed: ${day.caloriesConsumed}`,
+                            `Deficit: ${day.deficit}`,
+                            day.weight ? `Weight: ${day.weight}kg` : "No weight data",
+                        ];
                     },
                 },
             },
             legend: {
                 display: true,
-                position: 'top',
+                position: "top",
                 labels: {
-                    color: theme.text, // 👉 Cambia color de las leyendas
-                    font: {
-                        size: 14,
-                    },
+                    color: theme.text,
+                    font: { size: 14 },
                 },
             },
         },
@@ -120,9 +131,15 @@ const ProfileStats = () => {
     return (
         <Container className="profile-stats">
             <ButtonGroup>
-                <RangeButton onClick={() => setRange('weekly')}>Weekly</RangeButton>
-                <RangeButton onClick={() => setRange('monthly')}>Monthly</RangeButton>
-                <RangeButton onClick={() => setRange('annually')}>Annually</RangeButton>
+                <RangeButton active={range === 'weekly'} onClick={() => setRange('weekly')}>
+                    Weekly
+                </RangeButton>
+                <RangeButton active={range === 'monthly'} onClick={() => setRange('monthly')}>
+                    Monthly
+                </RangeButton>
+                <RangeButton active={range === 'annually'} onClick={() => setRange('annually')}>
+                    Annually
+                </RangeButton>
             </ButtonGroup>
             <ChartWrapper>
                 <Bar data={chartData} options={chartOptions} />

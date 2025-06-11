@@ -30,10 +30,26 @@ export const getDailyLog = async (token) => {
                 "Content-Type": "application/json"
             }
         });
-        console.log(response, 'log getdaily log')
+        console.log(response, 'log getdaily log!!!!!!!!"""""')
         return response.data
     } catch (error) {
         console.error(error)
         throw (error)
+    }
+};
+
+export const getTodayDailyLog = async (token) => {
+    try {
+        const response = await axios.get(`${URL_B}api/v1/daily_logs/today`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        return response.data;
+    } catch (error) {
+        console.error("⛔️ Error al obtener el log del día:", error);
+        throw error;
     }
 }

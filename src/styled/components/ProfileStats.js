@@ -31,7 +31,7 @@ export const ButtonGroup = styled.div`
 export const RangeButton = styled.button`
   padding: 0.5rem 1rem;
   border: none;
-  background-color: ${({ theme }) => theme.surface};
+  background-color:  ${({ active, theme }) => (active ? theme.primary : theme.surface)};
   color: ${({ theme }) => theme.primary};
   border-radius: 5px;
   cursor: pointer;

@@ -1,34 +1,37 @@
-import { useState, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { createMeal } from "../services/mealServices";
 import { useDailyLog } from "../contexts/DailyLogContext";
 
-export const useMealCardList = (dailyLog) => {
-    const { refreshDailyLog } = useDailyLog()
+export const useMealCardList = () => {
+    const { setDailyLog, dailyLog } = useDailyLog()
     const [mealName, setMealName] = useState('');
     const [error, setError] = useState(null);
     const [showInput, setShowInput] = useState(false);
+    const [adding, setAdding] = useState(false);
 
-    const handleShowInput = () => {
-        setShowInput(true);
-    };
-
-    const handleChange = (value) => {
-        setMealName(value);
-    };
+    const handleShowInput = useCallback(() => setShowInput(true), []);
+    const handleChange = useCallback((value) => setMealName(value), []);
 
     const handleAddMeal = async () => {
-        if (!mealName.trim()) return
-
+        if (!mealName.trim()) return;
+        if (adding) return;
+        setAdding(true);
 
         try {
-            await createMeal(dailyLog.id, { name: mealName });
-            await refreshDailyLog();
+            const newMeal = await createMeal(dailyLog.id, { name: mealName });
+            setDailyLog((prevLog) => ({
+                ...prevLog,
+                 meals: [...(prevLog.meals || []), newMeal]
+            }));
 
             setMealName("");
             setShowInput(false);
             setError(null);
         } catch (error) {
-            setError(error.message);
+            const message = error?.response?.data?.error || error.message || "Ocurrió un error al agregar la comida";
+            setError(message);
+        } finally {
+            setAdding(false)
         }
     };
 
@@ -40,5 +43,6 @@ export const useMealCardList = (dailyLog) => {
         error,
         handleShowInput,
         handleChange,
+        adding
     }
 }
