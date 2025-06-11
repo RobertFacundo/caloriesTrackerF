@@ -5,24 +5,6 @@ import { StatsContainer, StatsLeft, StatsRight, ToggleSwitch } from '../styled/c
 import Loader from "./Loader";
 
 
-const TrainingDayToggle = React.memo(({ trainingDay, toggleTrainingDay, updating }) => {
-    return (
-        <div style={{ display: "flex", gap: "0.75rem" }} data-testid='toggleText'>
-            {trainingDay ? "🏋️ Today is a training day!" : "💪 Today is a training day?"}
-            <ToggleSwitch>
-                <input
-                    type="checkbox"
-                    checked={trainingDay}
-                    onChange={toggleTrainingDay}
-                    disabled={updating}
-                />
-                <span />
-            </ToggleSwitch>
-        </div>
-    );
-});
-
-
 const HomeStats = React.memo(() => {
     const { loading, error, dailyNutrition, calorieDeficit, dailyCalories, trainingDay, toggleTrainingDay, updating } = useHomeStats();
 
@@ -32,7 +14,6 @@ const HomeStats = React.memo(() => {
     return (
         <StatsContainer>
             <StatsLeft>
-                <TrainingDayToggle trainingDay={trainingDay} toggleTrainingDay={toggleTrainingDay} updating={updating} />
                 <div className="home-stats">
                     <p>🔥 Max daily intake: <strong>{dailyCalories || 0}</strong> kcal</p>
                     <p>🍽️ You've consumed: <strong>{dailyNutrition?.calories || 0}</strong> kcal</p>
